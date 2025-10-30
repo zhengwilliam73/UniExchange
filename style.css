@@ -1,5 +1,35 @@
 body {
-font-family: "Times New Roman", Arial, "Comic Sans MS";
-background-color: #d5d8dc;
+    font-family: "Times New Roman", Arial, "Comic Sans MS";
+    background-color: #d5d8dc;
+    font-size:100%;
 }
 
+. header {
+
+}
+
+.card {
+    margin: 5px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 200px;
+    height: 450px;
+}
+
+.card:hover {
+    border: 1px solid #777;
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+}
+
+.card h2 {
+    padding: 5px;
+    text-align: center;
+}
+
+.card p {
+    padding: 2px;
+}
