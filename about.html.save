@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<style>
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      border: 2px dashed blue;
+    }
+</style>
+
+<head>
+	<title> About UniExchange </title>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+        
+	<!-- Navigation menu: links to other pages -->
+	<nav>
+        <ul style="list-style-type: none; padding: 0; display: flex; gap: 20px;">
+		<li><a href="index.html">Home</a></li>
+		<li><a href="about.html">About</a></li>
+		<li><a href="blog.html">Blog</a></li>
+		<li><a href="hub.html">Hub</a></li>
+		<li><a href="post.html">Post</a></li>
+		<li><a href="support.html">Support</a></li>
+		</ul>
+	</nav>
+	
+	<main>
+		<h1>About UniExchange </h1>
+	
+		<p> Trading items can be quite helpful on a college campus. Being able to trade things such as textbooks, dorm and school supplies, accessories, 
+		and clothing to and from people living close to you can also be quite convenient. That's why our team was surprised to find that there 
+		was no widely recognized place to go to for trading items here at Drexel. There are some groups scattered throughout the web, but 
+		nothing that would gurantee safety and reliability.
+		</p>
+
+		<p> We hope to create a platform where people do not have to worry about scammers and sketchy deals. Drexel members should be at ease 
+		when trading their items.
+		</p>
+	
+		<p> Built by Drexel members for Drexel members, we look towards taking feedback and making constant improvements to suit the campuses' needs.
+		</p>
+	</main>
+</body>
+</html>
