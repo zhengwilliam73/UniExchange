@@ -1,0 +1,25 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+/* Only center the FORM container, NOT the nav */
+.form-container {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background: linear-gradient(135deg, #71b7e6, #9b59b6);
+}
+
+/* Optional: Form styling */
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+}
