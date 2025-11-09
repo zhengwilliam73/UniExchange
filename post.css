@@ -11,7 +11,7 @@
     height: 100vh;
     justify-content: center;
     align-items: center;
-    padding: 10px;
+    padding: 1000px;
     background: linear-gradient(135deg, #71b7e6, #9b59b6);
 }
 
@@ -22,4 +22,3 @@ form {
     border-radius: 8px;
 }
 
-}
