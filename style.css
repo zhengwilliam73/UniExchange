@@ -33,3 +33,25 @@ body {
 .card p {
     padding: 2px;
 }
+
+
+/* Only center the FORM container, NOT the nav */
+.form-container {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: lightblue;
+}
+
+/* Optional: Form styling */
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+textarea {
+        resize: none;
+}
