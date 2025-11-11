@@ -3,10 +3,10 @@
 
 <head>
         <title>Uniexchange - Posting Page</title>
-        <link rel = "stylesheet" href = "post.css">
+        <link rel = "stylesheet" href = "post.css?v=1.0">
 </head>
 
-
+<body>
      <!-- Navigation menu: links to other pages -->
     <nav>
         <ul style="list-style-type: none; padding: 0; display: flex; gap: 20px;">
@@ -21,35 +21,34 @@
     </nav>
 
 
-<body>
-	<div class = "form-container">	
-	<form>
-		<div>
-			<label for = "title" >Title:</label>
-			<textarea id = "title" name = "title" style = "width: 500 px; height: 60px;" rows = "5" cols = "50" required>
-			</textarea>
-		</div>
-		<br>
+        <div class = "form-container">
+        <form>
+                <div>
+                        <label for = "title" >Title:</label>
+                        <textarea id = "title" name = "title" style = "width: 500px; height: 60px;" rows = "5" cols = "50" required>
+                        </textarea>
+                </div>
+                <br>
 
                 <div>
                         <label for = "description" >Description:</label>
                         <textarea id = "description" name = "description" style = "width: 500px; height: 60px;" rows = "5" cols = "50" required>
-                	</textarea>
-		</div>
+                        </textarea>
+                </div>
                 <br>
 
                 <div>
                         <label for = "condition" >Condition:</label>
-			<select id = "condition" name = "condition">
-				<option value = "New">New</option>
-				<option value = "Fairly New">Fairly New</option>
-				<option value = "Acceptable">Acceptable</option>
-				<option value = "Used">Used</option>
-				<option value = "Poor">Poor</option>
-                	</select>
-		</div>
+                        <select id = "condition" name = "condition">
+                                <option value = "New">New</option>
+                                <option value = "Fairly New">Fairly New</option>
+                                <option value = "Acceptable">Acceptable</option>
+                                <option value = "Used">Used</option>
+                                <option value = "Poor">Poor</option>
+                        </select>
+                </div>
                 <br>
-		
+
                 <div>
                         <label for = "Price" >Price:</label>
                         <input type = "number" id = "price" step = "0.01" min = "0" max = "9999" required>
@@ -58,24 +57,24 @@
 
                 <div>
                         <label for = "Location" >Location:</label>
-                        <input type = "text" id = "location" name = "location" required>
+                        <input type = "text" id = "location" name = "location" style = "width: 300px;" required>
                 </div>
                 <br>
 
-		<div>
-			<input type = "reset">
-		</div>
-		<br>
+                <div>
+                        <input type = "reset">
+                </div>
+                <br>
 
-		<div>
-			<button type="button" onclick="setValues()">Submit</button>
-		</div>
+                <div>
+                        <button type="button" onclick="setValues()">Submit</button>
+                </div>
 
-	</form>
-		<p id="postResult">  awd</p>
-        	<script src = "script.js"> </script>
+        </form>
+                <p id="postResult">  awd</p>
+                <script src = "script.js"> </script>
 
-	</div>
+        </div>
 </body>
 
 
