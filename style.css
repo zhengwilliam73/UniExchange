@@ -35,6 +35,11 @@ body {
     padding: 2px;
 }
 
+/* Hides the missing image thing*/
+img[src=""], img:not([src]) {
+    display: none;
+}
+
 
 /* Only center the FORM container, NOT the nav */
 .form-container {
