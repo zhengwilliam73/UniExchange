@@ -6,10 +6,8 @@
         <link rel = "stylesheet" href = "style.css?v=1.0">
 	
 	<style>
-	    * {
-    	        margin: 0;
-    	        padding: 0;
-    	        box-sizing: border-box;
+	    body {
+		background-color: lightblue;
 	    }
 	</style>
 </head>
@@ -91,10 +89,18 @@
                 </div>
 
         </form>
-                <p id="postResult">  awd</p>
-                <script src = "script.js"> </script>
-
         </div>
+
+	<div class="card">
+		<img id = "theImage" src="theItem"/>
+		<h2 id ="theTitle"></h2>
+		<p id ="theDescription"></p>
+		<p id ="theCondition"></p>
+		<p id ="thePrice"></p>
+		<p id ="theLocation"></p>
+	</div>
+
+	<script src="script.js"></script>
 </body>
 
 
