@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <title>Uniexchange - Posting Page</title>
+        <link rel = "stylesheet" href = "/style.css">
+	
+	<style>
+	    body {
+		background-color: lightblue;
+	    }
+	</style>
+</head>
+
+<body>
+     <!-- Navigation menu: links to other pages -->
+    <%- include('./partials/nav.ejs') %>
+
+
+        <div class = "form-container">
+        <form action="/" method="post">
+                <div>
+                        <label for = "title" >Title:</label>
+                        <textarea id = "title" name = "title" style = "width: 500px; height: 60px;" rows = "5" cols = "50"required></textarea>
+                </div>
+                <br>
+
+                <div>
+                        <label for = "description" >Description:</label>
+                        <textarea id = "description" name = "body" style = "width: 500px; height: 60px;" rows = "5" cols = "50" required></textarea>
+                </div>
+                <br>
+
+                <div>
+                        <label for = "condition" >Condition:</label>
+                        <select id = "condition" name = "condition">
+                                <option value = "New">New</option>
+                                <option value = "Fairly New">Fairly New</option>
+                                <option value = "Acceptable">Acceptable</option>
+                                <option value = "Used">Used</option>
+                                <option value = "Poor">Poor</option>
+                        </select>
+                </div>
+                <br>
+
+                <div>
+                        <label for = "Price" >Price:</label>
+                        <input type = "number" id = "price" name = "price" step = "0.01" min = "0" max = "9999" required>
+                </div>
+                <br>
+
+                <div>
+                        <label for = "Location" >Location:</label>
+                        <input type = "text" id = "location" name = "location" style = "width: 300px;" required>
+                </div>
+                <br>
+
+		  <label for ="item">Upload an image of your item:
+
+                </label>
+		 <br>
+
+                <input type ="file" id = "item" name="item"
+
+                accept="image/png, image/jpeg" />
+		 <br>
+                <br>
+
+	
+                <div>
+                        <input type = "reset">
+                </div>
+                <br>
+
+                <div>
+                        <button type="submit" onclick="setValues()">Submit</button>
+                </div>
+
+        </form>
+        </div>
+
+	<div class="card">
+		<img id = "theImage" src="" />
+		<h2 id ="theTitle"></h2>
+		<p id ="theDescription"></p>
+		<p id ="theCondition"></p>
+		<p id ="thePrice"></p>
+		<p id ="theLocation"></p>
+	</div>
+
+	<script src="script.js"></script>
+</body>
+
+
+
+</html>
