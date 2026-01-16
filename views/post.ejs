@@ -2,28 +2,15 @@
 <html>
 
 <head>
-        <title>Uniexchange - Posting Page</title>
-        <link rel = "stylesheet" href = "/style.css">
-	
-	<style>
-	    body {
-		background-color: lightblue;
-	    }
-	</style>
+    <%- include('./partials/head.ejs') %>
 </head>
 
 <body>
-   <!-- Navigation menu: links to other pages -->
     <%- include('./partials/nav.ejs') %>
 
-    <!-- Header: links to other pages -->
-     <%- include('./partials/head.ejs') %>
-    
-     <!-- Footer: links to other pages-->
-    <%- include('./partials/footer.ejs') %>
 
         <div class = "form-container">
-        <form action="/" method="post">
+        <form action = "/" method= "POST">
                 <div>
                         <label for = "title" >Title:</label>
                         <textarea id = "title" name = "title" style = "width: 500px; height: 60px;" rows = "5" cols = "50"required></textarea>
@@ -32,7 +19,7 @@
 
                 <div>
                         <label for = "description" >Description:</label>
-                        <textarea id = "description" name = "body" style = "width: 500px; height: 60px;" rows = "5" cols = "50" required></textarea>
+                        <textarea id = "description" name = "description" style = "width: 500px; height: 60px;" rows = "5" cols = "50" required></textarea>
                 </div>
                 <br>
 
@@ -60,16 +47,14 @@
                 </div>
                 <br>
 
-		  <label for ="item">Upload an image of your item:
+		  <!-- <label for ="item">Upload an image of your item:
 
                 </label>
 		 <br>
-
                 <input type ="file" id = "item" name="item"
-
                 accept="image/png, image/jpeg" />
 		 <br>
-                <br>
+                <br> -->
 
 	
                 <div>
@@ -78,7 +63,12 @@
                 <br>
 
                 <div>
-                        <button type="submit" onclick="setValues()">Submit</button>
+                        <button type="button" onclick="setValues()">Submit to this page</button>
+
+                        <br>
+                        <br>
+
+                        <button type="submit">Submit as a post</button>
                 </div>
 
         </form>
@@ -94,6 +84,8 @@
 	</div>
 
 	<script src="script.js"></script>
+
+    <%- include('./partials/footer.ejs') %>
 </body>
 
 
