@@ -77,6 +77,21 @@ app.get('/post', (req, res) => {
     res.render('post', { title: 'Post'});
 });
 
+app.get('/about', (req, res) => {
+    res.render('about', { title: 'About Us'});
+});
+
+app.get('/blog', (req, res) => {
+    res.render('blog', { title: 'Blogs'});
+});
+
+app.get('/hub', (req, res) => {
+    res.render('hub', { title: 'Hub'});
+});
+
+app.get('/support', (req, res) => {
+    res.render('support', { title: 'Support'});
+});
 // 404 page
 app.use((req, res) => {
     res.render('404', { title: '404!'});
