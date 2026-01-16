@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Blog Page</title>
+  </head>
+
+<body id="top" style="margin: 24px; line-height: 1.6; font-family: Arial, sans-serif;">
+    <!-- Header -->
+    <header>
+      <h1 style="text-align: center; font-weight: bold;">Blogs & Updates</h1>
+    </header>
+     <!-- Navigation menu: links to other pages -->
+    <%- include('./partials/nav.ejs') %>
+
+    <!-- Header: links to other pages -->
+     <%- include('./partials/head.ejs') %>
+    
+     <!-- Footer: links to other pages-->
+    <%- include('./partials/footer.ejs') %>
+
+    <!-- Blog Post Section -->
+    <section class="blog-post">
+      <article>
+        <h2 style="margin-bottom: 0;">UniExchange Begins!</h2>
+        <p style="margin-top: 4px; font-style: italic;">10/23/2025</p>
+
+        <p>
+          Hello Drexel Students! <br>
+          We’re officially entering the development phase of our project! <br>
+          After weeks of brainstorming, planning, and refining our concept, our team is now bringing our ideas to life.
+          This stage marks the transition from design and strategy to hands-on creation, building, testing, and shaping
+          the core features that will define our platform. <br><br>
+          Stay tuned as we document our progress, challenges, and milestones along the way!
+        </p>
+
+        <p>Below are brief overviews of what we've implemented so far:</p>
+        <ul>
+          <li>A home page where you can navigate across our site</li>
+          <li>An About Us page where you can meet the developers</li>
+          <li>A Support page so you can reach out to us about any issues</li>
+          <li>The foundation for the page where you can post your items</li>
+        </ul>
+
+        <p>Thank you for choosing to support <strong>UniExchange</strong>!</p>
+      </article>
+    </section>
+  </body>
+</html>
