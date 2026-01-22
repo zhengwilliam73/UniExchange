@@ -5,16 +5,31 @@
     <%- include('./partials/nav.ejs') %>
 
     <!-- Header: links to other pages -->
-     <%- include('./partials/head.ejs') %>
+    <%- include('./partials/head.ejs') %>
     
-     <!-- Footer: links to other pages-->
+    <!-- Footer: links to other pages-->
     <%- include('./partials/footer.ejs') %>
 
+<body>
+    <div class = "posts content">
+        <h2>Posts:</h2>
+        <% if (posts.length > 0) { %>
+            <% posts.forEach(post => { %>
+                <div class ="card">
+                    <a class="single" href=/<%= post._id %>>
+                    <h3 class="title"><%= post.title %></h3>
+                    </a>
+                    <p class="description"><%= post.body %></p>
+                    <p class="condition">Condition: <%= post.condition %></p>
+                    <p class="price">Price: $<%= post.price %></p>
+                    <p class="location">Location: <%= post.location %></p>
+                </div>
 
-   <form>
-	<label for= "name">Name:</label><br>
-	<input type="text" id="name" name ="name">
-    </form>
-
+             <% }) %>
+         <% } else { %>
+             <p>There are no posts to display...</p>
+         <% } %>
+    </div>
+</body>
 
 </html>
