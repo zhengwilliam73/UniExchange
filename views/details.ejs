@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head.ejs') %>
+</head>
+<body>
+    <%-include("./partials/nav.ejs") %>
+
+    <div class = "details content">
+        <h2><%=post.title %></h2>
+        <div class = "content">
+            <p>Description: <%= post.description %></p>
+            <p>Condition: <%= post.condition %></p>
+            <p>Price: $<%= post.price %></p>
+            <p>Location: <%= post.location %></p>
+        </div>
+        <a class = "delete" data-doc="<%= post._id %>">delete</a>
+    </div>
+
+    <%-include("./partials/footer.ejs") %>
+
+</body>
+</html>

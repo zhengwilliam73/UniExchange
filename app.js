@@ -44,35 +44,6 @@ app.post('/', (req, res) => {
         })
 })
 
-app.get('/posts/:id', (req, res) => {
-    const id = req.params.id;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).render('404', { title: 'Post not found' });
-    }
-
-    Post.findById(id)
-        .then(result => {
-            if (!result) {
-                return res.status(404).render('404', { title: 'Post not found' });
-            }
-            res.render('details', { post: result, title: 'Post Details' });
-        })
-        .catch(err => console.log(err));
-});
-
-app.delete('/posts/:id', (req, res) => {
-    const id = req.params.id;
-
-    Post.findByIdAndDelete(id)
-        .then(result => {
-            res.json({ redirect: '/'})
-        })
-        .catch(err => {
-            console.log(err);
-        })
-})
-
 app.get('/post', (req, res) => {
     res.render('post', { title: 'Post'});
 });
@@ -92,6 +63,39 @@ app.get('/hub', (req, res) => {
 app.get('/support', (req, res) => {
     res.render('support', { title: 'Support'});
 });
+
+
+
+app.get('/:id', (req, res) => {
+    const id = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).render('404', { title: 'Post not found' });
+    }
+
+    Post.findById(id)
+        .then(result => {
+            if (!result) {
+                return res.status(404).render('404', { title: 'Post not found' });
+            }
+            res.render('details', { post: result, title: 'Post Details' });
+        })
+        .catch(err => console.log(err));
+});
+
+app.delete('/:id', (req, res) => {
+    const id = req.params.id;
+
+    Post.findByIdAndDelete(id)
+        .then(result => {
+            res.json({ redirect: '/'})
+        })
+        .catch(err => {
+            console.log(err);
+        })
+})
+
+
 // 404 page
 app.use((req, res) => {
     res.render('404', { title: '404!'});
