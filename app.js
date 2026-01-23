@@ -23,16 +23,20 @@ app.use(morgan('dev'));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
+    res.render('index', { title: 'Home'});
+});
+
+app.get('/hub', (req, res) => {
     Post.find().sort( {createdAt: -1})
         .then((result) => {
-            res.render('index', {title: 'All Posts', posts: result})
+            res.render('hub', {title: 'All Posts', posts: result})
         })
         .catch((err) => {
             console.log(err);
         })
 });
 
-app.post('/', (req, res) => {
+app.post('/hub', (req, res) => {
     const post = new Post(req.body);
 
     post.save()
@@ -56,9 +60,7 @@ app.get('/blog', (req, res) => {
     res.render('blog', { title: 'Blogs'});
 });
 
-app.get('/hub', (req, res) => {
-    res.render('hub', { title: 'Hub'});
-});
+
 
 app.get('/support', (req, res) => {
     res.render('support', { title: 'Support'});

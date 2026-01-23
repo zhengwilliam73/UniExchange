@@ -24,25 +24,7 @@
     <!-- Brief description of the site's purpose -->
     <p>Check out Drexel's marketplace hub, helping students buy and sell securely.</p>
 
-    <div class = "posts content">
-        <h2>Posts:</h2>
-        <% if (posts.length > 0) { %>
-            <% posts.forEach(post => { %>
-                <div class ="card">
-                    <a class="single" href=/<%= post._id %>>
-                    <h3 class="title"><%= post.title %></h3>
-                    </a>
-                    <p class="description"><%= post.body %></p>
-                    <p class="condition">Condition: <%= post.condition %></p>
-                    <p class="price">Price: $<%= post.price %></p>
-                    <p class="location">Location: <%= post.location %></p>
-                </div>
 
-             <% }) %>
-         <% } else { %>
-             <p>There are no posts to display...</p>
-         <% } %>
-    </div>
 </body>
 </html>
 
