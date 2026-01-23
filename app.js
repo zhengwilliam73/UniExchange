@@ -36,12 +36,12 @@ app.get('/hub', (req, res) => {
         })
 });
 
-app.post('/hub', (req, res) => {
+app.post('/', (req, res) => {
     const post = new Post(req.body);
 
     post.save()
         .then((result) => {
-            res.redirect('/');
+            res.redirect('/hub');
         })
         .catch((err)=> {
             console.log(err);
@@ -92,7 +92,7 @@ app.delete('/:id', (req, res) => {
 
     Post.findByIdAndDelete(id)
         .then(result => {
-            res.json({ redirect: '/'})
+            res.json({ redirect: '/hub'})
         })
         .catch(err => {
             console.log(err);
