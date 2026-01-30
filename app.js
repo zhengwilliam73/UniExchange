@@ -40,6 +40,7 @@ app.get('/hub', (req, res) => {
 
 app.post('/', upload.single('image'), async (req, res) => {
     const post = new Post({
+        // Made by William Zheng, 1/30
         // imageId: req.file.id,
         title: req.body.title,
         description: req.body.description,
