@@ -2,9 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const postSchema = new Schema( {
-    image: {
-        type: String,
-        required: false
+    imageId: {
+        type: mongoose.Schema.Types.ObjectId // Made by William Zheng, 1/30
     },
     title: {
         type: String,
