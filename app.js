@@ -94,6 +94,8 @@ app.get('/support', (req, res) => {
 
 
 
+
+
 app.get('/:id', (req, res) => {
     const id = req.params.id;
 
@@ -109,6 +111,10 @@ app.get('/:id', (req, res) => {
             res.render('details', { post: result, title: 'Post Details' });
         })
         .catch(err => console.log(err));
+});
+
+app.get('/posts/:id/edit', (req, res) => {
+  res.render('edit', { title: 'Edit Post' });
 });
 
 
@@ -131,3 +137,4 @@ app.use((req, res) => {
     res.render('404', { title: '404!'});
     res.status(404);
 });
+
