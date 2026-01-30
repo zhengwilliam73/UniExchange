@@ -84,3 +84,17 @@ textarea {
       cursor: pointer;
       box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
     }
+
+    /* made by Frank */
+    .edit{                    
+        position: absolute;
+        top:0;
+        right: 50px;
+        border-radius: 50%;
+        padding: 8px;
+        background-color: white;
+    }
+    .edit:hover{
+      cursor: pointer;
+      box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
+    }
