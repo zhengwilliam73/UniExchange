@@ -2,6 +2,8 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const Post = require('./models/post');
+const upload = require('./gridfs')
+
 
 // express app
 const app = express();
@@ -36,8 +38,15 @@ app.get('/hub', (req, res) => {
         })
 });
 
-app.post('/', (req, res) => {
-    const post = new Post(req.body);
+app.post('/', upload.single('image'), async (req, res) => {
+    const post = new Post({
+        // imageId: req.file.id,
+        title: req.body.title,
+        description: req.body.description,
+        condition: req.body.condition,
+        price: req.body.price,
+        location: req.body.location
+    });
 
     post.save()
         .then((result) => {
