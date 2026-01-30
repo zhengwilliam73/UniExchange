@@ -2,7 +2,8 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const Post = require('./models/post');
-const upload = require('./gridfs')
+const upload = require('./gridfs');
+const { GridFSBucket } = require('mongodb');
 
 
 // express app
@@ -14,6 +15,22 @@ const dbURI = "mongodb+srv://zhengwilliam73_db_user:1yok67HMYsyQCA9x@uniexchange
 mongoose.connect(dbURI)
   .then(result => app.listen(3001))
   .catch(err => console.log(err));
+
+
+//Written by Jacky Jiang
+let bucket;
+
+mongoose.connection.once('open', () => {
+  bucket = new GridFSBucket(mongoose.connection.db, {
+    bucketName: 'images'
+  });
+});
+
+//Written by Jacky Jiang
+app.get('/image/:id', (req, res) => {
+  const id = new mongoose.Types.ObjectId(req.params.id);
+  bucket.openDownloadStream(id).pipe(res);
+});
 
 
 app.use(express.static('public'));
