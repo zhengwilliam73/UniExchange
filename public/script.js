@@ -4,7 +4,7 @@ function setValues() {
     const location = document.getElementById('location').value;
     const condition = document.getElementById('condition').value;
     const description = document.getElementById('description').value;
-    const imageInput = document.getElementById('item');
+    const imageInput = document.getElementById('image');
 
     document.getElementById('theTitle').innerText = title;
     document.getElementById('theDescription').innerText = description;

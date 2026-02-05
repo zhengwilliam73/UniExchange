@@ -6,6 +6,7 @@ const upload = require('./gridfs');
 const { GridFSBucket } = require('mongodb');
 
 
+
 // express app
 const app = express();
 
@@ -13,9 +14,8 @@ const app = express();
 const dbURI = "mongodb+srv://zhengwilliam73_db_user:1yok67HMYsyQCA9x@uniexchange-cluster.fbmonai.mongodb.net/?appName=uniexchange-cluster";
 
 mongoose.connect(dbURI)
-  .then(result => app.listen(3001))
+  .then(() => app.listen(3001))
   .catch(err => console.log(err));
-
 
 //Written by Jacky Jiang
 let bucket;
@@ -55,25 +55,49 @@ app.get('/hub', (req, res) => {
         })
 });
 
+//Updated by Jacky Jiang
 app.post('/', upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).send('No file uploaded');
+    if (!bucket) return res.status(500).send('GridFS not ready');
+
+    const uploadFile = () => {
+      return new Promise((resolve, reject) => {
+        const uploadStream = bucket.openUploadStream(req.file.originalname, {
+          contentType: req.file.mimetype
+        });
+
+        uploadStream.end(req.file.buffer);
+
+        uploadStream.on('error', reject);
+
+        uploadStream.on('finish', () => {
+          resolve(uploadStream.id);
+        });
+      });
+    };
+
+    const fileId = await uploadFile();
+
     const post = new Post({
-        // Made by William Zheng, 1/30
-        // imageId: req.file.id,
-        title: req.body.title,
-        description: req.body.description,
-        condition: req.body.condition,
-        price: req.body.price,
-        location: req.body.location
+      imageId: fileId, 
+      title: req.body.title,
+      description: req.body.description,
+      condition: req.body.condition,
+      price: req.body.price,
+      location: req.body.location
     });
 
-    post.save()
-        .then((result) => {
-            res.redirect('/hub');
-        })
-        .catch((err)=> {
-            console.log(err);
-        })
-})
+    await post.save();
+    res.redirect('/hub');
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Upload failed');
+  }
+});
+
+
 
 app.get('/post', (req, res) => {
     res.render('post', { title: 'Post'});
