@@ -139,7 +139,16 @@ app.get('/:id', (req, res) => {
 });
 
 app.get('/posts/:id/edit', (req, res) => {
-  res.render('edit', { title: 'Edit Post' });
+  Post.findById(req.params.id)
+    .then(post => {
+      res.render('edit', {
+        title: 'Edit Post',
+        post: post
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
 });
 
 

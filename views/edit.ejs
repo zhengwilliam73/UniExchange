@@ -1,5 +1,3 @@
-<!-- File made by Frank. Copy and pasted the code from post with a few changes to include hardcoded data 
-  when the user clicks on the edit button--->
 <!DOCTYPE html>
 <html>
 
@@ -10,89 +8,92 @@
 <body>
     <%- include('./partials/nav.ejs') %>
 
+    <div class="form-container">
+        <form action="/" method="POST">
+            
+            <div>
+                <label for="title">Title:</label>
+                <textarea
+                    id="title"
+                    name="title"
+                    style="width: 500px; height: 60px;"
+                    required
+                ><%= post.title %></textarea>
+            </div>
+            <br>
 
-        <div class = "form-container">
-        <form action = "/" method= "POST">
-                <div>
-                        <label for = "title" >Title:</label>
-                        <textarea id="title" name="title" required>Hard coded title</textarea>
-                </div>
-                <br>
+            <div>
+                <label for="description">Description:</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    style="width: 500px; height: 60px;"
+                    required
+                ><%= post.description %></textarea>
+            </div>
+            <br>
 
-                <div>
-                        <label for = "description" >Description:</label>
-                        <textarea id="description" name="description" required>
-                        Hard coded description
-                        </textarea>
+            <div>
+                <label for="condition">Condition:</label>
+                <select id="condition" name="condition">
+                    <option value="New" <%= post.condition === 'New' ? 'selected' : '' %>>New</option>
+                    <option value="Fairly New" <%= post.condition === 'Fairly New' ? 'selected' : '' %>>Fairly New</option>
+                    <option value="Acceptable" <%= post.condition === 'Acceptable' ? 'selected' : '' %>>Acceptable</option>
+                    <option value="Used" <%= post.condition === 'Used' ? 'selected' : '' %>>Used</option>
+                    <option value="Poor" <%= post.condition === 'Poor' ? 'selected' : '' %>>Poor</option>
+                </select>
+            </div>
+            <br>
 
-                </div>
-                <br>
+            <div>
+                <label for="price">Price:</label>
+                <input
+                    type="number"
+                    id="price"
+                    name="price"
+                    value="<%= post.price %>"
+                    required
+                >
+            </div>
+            <br>
 
-                <div>
-                        <label for = "condition" >Condition:</label>
-                        <select id = "condition" name = "condition">
-                                <option value = "New">New</option>
-                                <option value = "Fairly New">Fairly New</option>
-                                <option value = "Acceptable">Acceptable</option>
-                                <option value = "Used">Used</option>
-                                <option value = "Poor">Poor</option>
-                        </select>
-                </div>
-                <br>
+            <div>
+                <label for="location">Location:</label>
+                <input
+                    type="text"
+                    id="location"
+                    name="location"
+                    value="<%= post.location %>"
+                    style="width: 300px;"
+                    required
+                >
+            </div>
+            <br>
 
-                <div>
-                        <label for = "Price" >Price:</label>
-                        <input type="number" id="price" name="price" value="25" required>
-                </div>
-                <br>
+            <div>
+                <input type="reset">
+            </div>
+            <br>
 
-                <div>
-                        <label for = "Location" >Location:</label>
-                     <input type="text" id="location" name="location" value="Drexel" required>
-                </div>
-                <br>
-
-		  <!-- <label for ="item">Upload an image of your item:
-
-                </label>
-		 <br>
-                <input type ="file" id = "item" name="item"
-                accept="image/png, image/jpeg" />
-		 <br>
-                <br> -->
-
-	
-                <div>
-                        <input type = "reset">
-                </div>
-                <br>
-
-                <div>
-                        <button type="button" onclick="setValues()">Submit to this page</button>
-
-                        <br>
-                        <br>
-
-                        <button type="submit">Submit as a post</button>
-                </div>
+            <div>
+                <button type="button" onclick="setValues()">Submit to this page</button>
+                <br><br>
+                <button type="submit">Submit as a post</button>
+            </div>
 
         </form>
-        </div>
+    </div>
 
-	<div class="card">
-		<img id = "theImage" src="" />
-		<h2 id ="theTitle"></h2>
-		<p id ="theDescription"></p>
-		<p id ="theCondition"></p>
-		<p id ="thePrice"></p>
-		<p id ="theLocation"></p>
-	</div>
+    <div class="card">
+        <img id="theImage" src="" />
+        <h2 id="theTitle"></h2>
+        <p id="theDescription"></p>
+        <p id="theCondition"></p>
+        <p id="thePrice"></p>
+        <p id="theLocation"></p>
+    </div>
 
-	<script src="script.js"></script>
-
+    <script src="script.js"></script>
     <%- include('./partials/footer.ejs') %>
 </body>
-
-
-
 </html>
