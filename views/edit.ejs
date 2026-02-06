@@ -16,7 +16,7 @@
     <%- include('./partials/nav.ejs') %>
 
     <div class="form-container">
-        <form action="/posts/<%= post._id %>" method="POST">
+        <form action="/posts/<%= post._id %>" method="POST" enctype="multipart/form-data">
             
             <div>
                 <label for="title">Title:</label>
@@ -75,13 +75,27 @@
                     required
                 >
             </div>
-            
+            <br>
+
+
             <div>
                 <input type="reset">
             </div>
             
             <br>
-
+            <!-- Written by William Zheng, 2/6 -->
+            <div>
+		<label for ="item">Upload an image of your item:
+                </label>
+		 <br>
+                <input type="file" 
+                id="image" 
+                name="image" 
+                accept="image/png, image/jpeg"
+                required>
+		 <br>
+                <br>
+            </div>
     
 
             <div>
