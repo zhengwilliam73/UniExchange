@@ -9,7 +9,7 @@
     <%- include('./partials/nav.ejs') %>
 
     <div class="form-container">
-        <form action="/" method="POST">
+        <form action = "/" method= "POST" enctype="multipart/form-data">
             
             <div>
                 <label for="title">Title:</label>
@@ -69,6 +69,20 @@
                 >
             </div>
             <br>
+
+            <!-- Written by William Zheng, 2/6 -->
+            <div>
+		<label for ="item">Upload an image of your item:
+                </label>
+		 <br>
+                <input type="file" 
+                id="image" 
+                name="image" 
+                accept="image/png, image/jpeg"
+                required>
+		 <br>
+                <br>
+            </div>
 
             <div>
                 <input type="reset">
