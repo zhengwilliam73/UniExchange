@@ -98,7 +98,6 @@ app.post('/', upload.single('image'), async (req, res) => {
 });
 
 
-
 app.get('/post', (req, res) => {
     res.render('post', { title: 'Post'});
 });
