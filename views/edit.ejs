@@ -1,3 +1,10 @@
+<!-- File made by Frank.
+    - Displays an edit form for an existing 
+    post and pre-fills the form with data
+    from MongoDB
+    - Submits updated data to Express
+    and updates the post     
+-->
 <!DOCTYPE html>
 <html>
 
@@ -9,7 +16,7 @@
     <%- include('./partials/nav.ejs') %>
 
     <div class="form-container">
-        <form action="/" method="POST">
+        <form action="/posts/<%= post._id %>" method="POST">
             
             <div>
                 <label for="title">Title:</label>
@@ -68,17 +75,18 @@
                     required
                 >
             </div>
-            <br>
-
+            
             <div>
                 <input type="reset">
             </div>
+            
             <br>
 
+    
+
             <div>
-                <button type="button" onclick="setValues()">Submit to this page</button>
-                <br><br>
-                <button type="submit">Submit as a post</button>
+                <br>
+                <button type="submit">Update post</button>
             </div>
 
         </form>

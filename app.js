@@ -151,6 +151,27 @@ app.get('/posts/:id/edit', (req, res) => {
     });
 });
 
+//made by Frank 2/6/26. This route receives edited form, finds the post by ID, and updates MongoDB. The user
+// is sent back to the details page
+app.post('/posts/:id', async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    await Post.findByIdAndUpdate(id, {
+      title: req.body.title,
+      description: req.body.description,
+      condition: req.body.condition,
+      price: req.body.price,
+      location: req.body.location
+    });
+
+    res.redirect(`/${id}`);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
 
 
 app.delete('/:id', (req, res) => {
