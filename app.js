@@ -120,22 +120,6 @@ app.get('/support', (req, res) => {
 
 
 
-app.get('/:id', (req, res) => {
-    const id = req.params.id;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).render('404', { title: 'Post not found' });
-    }
-
-    Post.findById(id)
-        .then(result => {
-            if (!result) {
-                return res.status(404).render('404', { title: 'Post not found' });
-            }
-            res.render('details', { post: result, title: 'Post Details' });
-        })
-        .catch(err => console.log(err));
-});
 
 app.get('/posts/:id/edit', (req, res) => {
   Post.findById(req.params.id)
@@ -164,13 +148,28 @@ app.post('/posts/:id', async (req, res) => {
       location: req.body.location
     });
 
-    res.redirect(`/${id}`);
+    res.redirect(`/posts/${id}`); // William 2/6, attempted bug fix
   } catch (err) {
     console.log(err);
   }
 });
 
+app.get('/:id', (req, res) => {
+    const id = req.params.id;
 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).render('404', { title: 'Post not found' });
+    }
+
+    Post.findById(id)
+        .then(result => {
+            if (!result) {
+                return res.status(404).render('404', { title: 'Post not found' });
+            }
+            res.render('details', { post: result, title: 'Post Details' });
+        })
+        .catch(err => console.log(err));
+});
 
 
 app.delete('/:id', (req, res) => {
