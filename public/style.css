@@ -89,10 +89,13 @@ textarea {
     .edit{                    
         position: absolute;
         top:0;
-        right: 50px;
+        right: 60px;
         border-radius: 50%;
         padding: 8px;
         background-color: white;
+        text-decoration: none;
+        color: black;
+
     }
     .edit:hover{
       cursor: pointer;
