@@ -111,12 +111,9 @@ app.get('/blog', (req, res) => {
 });
 
 
-
 app.get('/support', (req, res) => {
     res.render('support', { title: 'Support'});
 });
-
-
 
 
 
@@ -134,25 +131,47 @@ app.get('/posts/:id/edit', (req, res) => {
     });
 });
 
-//made by Frank 2/6/26. This route receives edited form, finds the post by ID, and updates MongoDB. The user
-// is sent back to the details page
-app.post('/posts/:id', async (req, res) => {
+
+// Originally made by Frank on 2/6
+// William made additions and bug fixes on 2/12
+app.post('/posts/:id', upload.single('image'), async (req, res) => {
   const id = req.params.id;
 
   try {
-    await Post.findByIdAndUpdate(id, {
-      title: req.body.title,
-      description: req.body.description,
-      condition: req.body.condition,
-      price: req.body.price,
-      location: req.body.location
+    if (!req.file) return res.status(400).send('No file uploaded');
+    if (!bucket) return res.status(500).send('GridFS not ready');
+
+    const uploadStream = bucket.openUploadStream(req.file.originalname, {
+      contentType: req.file.mimetype
     });
 
-    res.redirect(`/posts/${id}`); // William 2/6, attempted bug fix
+    uploadStream.end(req.file.buffer);
+
+    uploadStream.on('error', err => {
+      console.error(err);
+      return res.status(500).send('Upload failed');
+    });
+
+    uploadStream.on('finish', async () => {
+      await Post.findByIdAndUpdate(id, {
+        imageId: uploadStream.id,
+        title: req.body.title,
+        description: req.body.description,
+        condition: req.body.condition,
+        price: req.body.price,
+        location: req.body.location
+      });
+
+      res.redirect('/hub');
+    });
+
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    res.status(500).send('Update failed');
   }
 });
+
+
 
 app.get('/:id', (req, res) => {
     const id = req.params.id;
