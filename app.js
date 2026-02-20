@@ -153,7 +153,13 @@ app.get('/support', (req, res) => {
     res.render('support', { title: 'Support'});
 });
 
+app.get('/login', (req, res) => {
+    res.render('login', { title: 'Login Page'});
+});
 
+app.get('/signup', (req, res) => {
+    res.render('signup', { title: 'Signup Page'});
+});
 
 
 app.get('/posts/:id/edit', (req, res) => {
