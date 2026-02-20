@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const Post = require('./models/post');
 const upload = require('./gridfs');
 const { GridFSBucket } = require('mongodb');
+const session = require('express-session');
+const MongoStore = require('connect-mongo').default;
 
 
 
@@ -12,6 +14,9 @@ const app = express();
 
 // connect to mongodb & listen for requests
 const dbURI = "mongodb+srv://zhengwilliam73_db_user:1yok67HMYsyQCA9x@uniexchange-cluster.fbmonai.mongodb.net/?appName=uniexchange-cluster";
+
+// Used to sign the session cookie
+SESSION_SECRET = "test"
 
 mongoose.connect(dbURI)
   .then(() => app.listen(3001))
@@ -25,6 +30,39 @@ mongoose.connection.once('open', () => {
     bucketName: 'images'
   });
 });
+
+// Written by William Zheng, 2/19/26
+// Session middleware
+app.use(
+  session({
+    secret: SESSION_SECRET,
+
+    resave: false,
+    saveUninitialized: false,
+
+    store: MongoStore.create({
+      mongoUrl: dbURI,
+    }),
+
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+      httpOnly: true,
+      sameSite: 'lax'
+    }
+  })
+);
+
+// Written by William Zheng, 2/19/26
+// Test cases for session
+app.get('/test-session', (req, res) => {
+  req.session.test = 'working';
+  res.send('Session set');
+});
+app.get('/check-session', (req, res) => {
+  res.send(req.session.test || 'No session');
+});
+
+
 
 //Written by Jacky Jiang
 app.get('/image/:id', (req, res) => {
