@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Sign Up!</title>
+  </head>
+
+<body id="top" style="margin: 24px; line-height: 1.6; font-family: Arial, sans-serif;">
+    <!-- Header -->
+    <header>
+      <h1 style="text-align: center; font-weight: bold;">Sign Up</h1>
+    </header>
+     <!-- Navigation menu: links to other pages -->
+    <%- include('./partials/nav.ejs') %>
+
+    <!-- Header: links to other pages -->
+     <%- include('./partials/head.ejs') %>
+
+<body>
+   
+
+
+        <div class = "form-container">
+        <form action = "/" method= "login" enctype="multipart/form-data">
+                <div>
+                        <label for = "username" >:</label>
+                        <textarea id = "username" name = "username" style = "width: 100px; height: 30px;" rows = "5" cols = "50"required></textarea>
+                </div>
+                <br>
+
+                <div>
+                        <label for = "password" >Password:</label>
+                        <textarea id = "password" name = "password" style = "width: 100px; height: 30px;" rows = "5" cols = "50" required></textarea>
+                </div>
+                <button type="submit">Login</button>
+                <br>
+</body>
