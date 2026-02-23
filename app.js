@@ -6,6 +6,7 @@ const upload = require('./gridfs');
 const { GridFSBucket } = require('mongodb');
 const session = require('express-session');
 const MongoStore = require('connect-mongo').default;
+const User = require('./models/user');
 
 
 
@@ -215,7 +216,31 @@ app.post('/posts/:id', upload.single('image'), async (req, res) => {
   }
 });
 
+//Made by Jacky Jiang 2/20/26
+app.post('/signup', async (req, res) => {
+  try {
+    const { username, password } = req.body;
 
+    const existingUser = await User.findOne({ username });
+
+    if (existingUser) {
+      return res.status(400).send('User already exists');
+    }
+
+    const newUser = new User({
+      username,
+      password,
+    });
+
+    await newUser.save();
+
+    res.redirect('/login');
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Signup failed');
+  }
+});
 
 app.get('/:id', (req, res) => {
     const id = req.params.id;
