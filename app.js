@@ -7,6 +7,7 @@ const { GridFSBucket } = require('mongodb');
 const session = require('express-session');
 const MongoStore = require('connect-mongo').default;
 const User = require('./models/user');
+const bcrypt = require('bcrypt');
 
 
 
@@ -217,6 +218,9 @@ app.post('/posts/:id', upload.single('image'), async (req, res) => {
 });
 
 //Made by Jacky Jiang 2/20/26
+//Additions made by William Zheng 2/23
+//This function originally lets a user sign up for a new account
+//Now, this function encrypts the password when the user submits their password
 app.post('/signup', async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -227,9 +231,14 @@ app.post('/signup', async (req, res) => {
       return res.status(400).send('User already exists');
     }
 
+    // Code to encrypt the user's password
+    const saltRounds = 12;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+
     const newUser = new User({
       username,
-      password,
+      password: hashedPassword, // Storing the hash instead of the plaintext
     });
 
     await newUser.save();
