@@ -67,6 +67,9 @@ textarea {
         resize: none;
 }
 
+.userGuide li {
+  margin-left: 30px;
+}
 
     /* details styles */
     .details{
