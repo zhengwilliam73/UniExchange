@@ -1,3 +1,4 @@
+<!-- Written by William Zheng, 2/27 -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,28 +7,54 @@
     <link rel = "stylesheet" href = "/style.css">
 </head>
 	
-<body>
-    </div>
 
-	<!-- Navigation menu: links to other pages -->
-    <%- include('./partials/nav.ejs') %>
+<body> 
+<!-- Navigation menu: links to other pages -->
+<%- include('./partials/nav.ejs') %>
+<!-- Header: links to other pages -->
+<%- include('./partials/head.ejs') %>
 
-    <!-- Header: links to other pages -->
-     <%- include('./partials/head.ejs') %>
-    
-
+   
+    <div class = "userGuide"> 
     <p> Starting the system is as simple as typing in the website address. If you see this text, you've already started the system!</p>
 
-    <p> Below is the main working feature of our website: making a post. 
+    
+    <h2> Below is the main working feature of our website: making a post. </h2>
+    <img src="../userGuide1.png" alt="Screenshot of a post" width="500" style="border: 5px solid black; margin-left: 30px;">
+    <ul>
         Here are all of the components of a post:
-        Title - The title of your post! This will be bolded and will have a larger size once the post is published
-        Description - The main space for you to write about the item you are selling. If needed, you can also write additional comments about your item here.
-        Price - Enter in the price of your item here. The minimum is 0 (free), and the maximum is 9999.
-        Location - Enter in where you want this trade to take place
-        Image: Upload a image of your item here. Only pngs and jpgs are accepted.
-    </p>
+        <li>Title - The title of your post! This will be bolded and will have a larger size once the post is published</li>
+        <li>Description - The main space for you to write about the item you are selling. If needed, you can also write additional comments about your item here.</li>
+        <li>Price - Enter in the price of your item here. The minimum is 0 (free), and the maximum is 9999.</li>
+        <li>Location - Enter in where you want this trade to take place</li>
+        <li>Image: Upload a image of your item here. Only pngs and jpgs are accepted.</li>
+    </ul>
+    <ul>
+        Here are all of the ouputs associated with making a post:
+        <li>Reset - Clears all inputs, including any images uploaded to the page</li>
+        <li>Submit to this page - Takes the current inputs and outputs a card of what the post would look like if it were to be submitted. No post gets submitted with this button, it just acts as a preview feature</li>
+        <li>Submit as a post - Only functions if all inputs have something. Redirects you to the hub page and updates the hub page with your post.</li>
+    </ul>
+    
 
+    <p style = "margin-left:30px;">This is what a post would look like on the hub page: </p>
+    <img src="../userGuide2.png" alt="Screenshot of a post on the hub page" width="300" style="border: 5px solid black; margin-left: 30px;">
 
+    <br>
+    <br>
+    <h2>Below is information on how to view a specific post: </h2>
+    <p style = "margin-left:30px;">Once in the hub page, you can click on a post (either by clicking the image or the title). This will then bring you to a page specific to that post.</p>
+
+    <img src="../userGuide3.png" alt="Screenshot of a post's page" width="1000" style="border: 5px solid black; margin-left: 30px;">
+
+    <ul>
+        Here are more details on what you can do in this page:
+        <li>edit - By clicking the edit button, you will be taken to a page that looks identical to the posting page, but with the previous information of your post already inside the text boxes.
+            For security reasons, the file will not be uploaded for you, and you will have to upload it yourself if you want to use the same image. After you are done, you will be redirected to the hub page again.
+        </li>
+        <li>delete - By clicking the delete button, the post will be deleted and you will be redirected to the hub page. As of now, there is no confirmation button asking if you are sure about this deicision.</li>
+    </ul>
+</div>
 </body>
     <!-- Footer: links to other pages-->
     <%- include('./partials/footer.ejs') %>
