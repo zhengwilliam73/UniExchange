@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>UniExchange - Drexel Marketplace</title>
+    <link rel = "stylesheet" href = "/style.css">
+</head>
+	
+<body>
+    </div>
+
+	<!-- Navigation menu: links to other pages -->
+    <%- include('./partials/nav.ejs') %>
+
+    <!-- Header: links to other pages -->
+     <%- include('./partials/head.ejs') %>
+    
+
+    <p>This guide provides the technical requirements and installation procedures necessary for you to set up and maintain the system.</p>
+
+    <p> The application is designed to be resource-efficient and can run on standard consumer-grade hardware.</p>
+
+    <p><b>Device Specifications To Run This Application:</b></p>
+        <ul>
+          <li><b>Device Type:</b> Laptop or Desktop (Windows 10/11, macOS, or Linux).</li>
+          <li><b>Processor:</b> Dual-core 2.0 GHz or higher.</li>
+          <li><b>Memory (RAM):</b> 4 GB minimum (8 GB recommended for optimal performance).</li>
+          <li><b>Storage:</b> 500 MB of available disk space for project files and local dependencies.</li>
+        </ul>
+
+    <p><b>Software Requirements:</b></p>
+        <ul>
+          <li><b>Git:</b> Required for cloning the source code repository. Download Git.</li>
+          <li><b>Node.js (v18.x or higher):</b> Includes npm, which is required to manage and install project dependencies. Download Node.js.</li>
+          <li><b>Web Browser:</b> A modern browser such as Google Chrome, Mozilla Firefox, or Microsoft Edge.</li>
+        </ul>
+
+    <p><b>Installation Guide:</b></p>
+        <ul>
+          <li><b>Clone The Repository:</b> <br> git clone [INSERT_CLONE_URL_HERE] <br> cd UniExchange</li>
+          <li><b>Install Dependencies:</b> <br> First do npm init, then npm install</li>
+          <li><b>Launch the System:</b> <br> nodemon app </li>
+        </ul>
+    <p><b>To pull the latest changes from the development group, run git pull followed by npm install to ensure new dependencies are added.</b></p>
+
+
+</body>
+    <!-- Footer: links to other pages-->
+    <%- include('./partials/footer.ejs') %>
+</html>
+
