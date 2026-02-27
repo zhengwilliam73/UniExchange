@@ -167,6 +167,10 @@ app.get('/userGuide', (req, res) => {
     res.render('userGuide', { title: 'User Guide'});
 });
 
+app.get('/systemGuide', (req, res) => {
+    res.render('systemGuide', { title: 'System Guide'});
+});
+
 
 app.get('/posts/:id/edit', (req, res) => {
   Post.findById(req.params.id)
