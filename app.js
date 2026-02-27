@@ -163,6 +163,10 @@ app.get('/signup', (req, res) => {
     res.render('signup', { title: 'Signup Page'});
 });
 
+app.get('/userGuide', (req, res) => {
+    res.render('userGuide', { title: 'User Guide'});
+});
+
 
 app.get('/posts/:id/edit', (req, res) => {
   Post.findById(req.params.id)
