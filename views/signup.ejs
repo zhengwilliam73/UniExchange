@@ -71,7 +71,7 @@
 
     // Disables submit if weak (common password or missing rules)
     const submitButton = document.querySelector("button[type='submit']");
-    if (isCommon || !hasMinLength || !hasUpper || !hasLower || !hasNumber || !hasSpecial) {
+    if (!hasMinLength || !hasUpper || !hasLower || !hasNumber || !hasSpecial) {
       submitButton.disabled = true;
     } else {
       submitButton.disabled = false;
