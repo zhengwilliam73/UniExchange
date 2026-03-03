@@ -330,8 +330,20 @@ app.post('/login', async (req, res) => {//When the form is submitted these lines
   }
 });
 
+// Made by William Zheng, 3/3
+// Logout route
+app.post('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Logout failed");
+    }
 
-
+    // Clear cookie from browser
+    res.clearCookie('connect.sid'); 
+    res.redirect('/login'); 
+  });
+});
 
 
 app.get('/:id', (req, res) => {
