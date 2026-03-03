@@ -49,7 +49,18 @@ const requireGuest = (req, res, next) => {
   next();
 };
 
-
+//Middleware for checking if the user is logged in so that they can make a post
+const requireLogin = (req, res, next) => {
+  if (!req.session.userId) {
+    return res.send(`
+      <script>
+        alert("You must be logged in to continue.");
+        window.location.href = "/login";
+      </script>
+    `);
+  }
+  next();
+};
 
 
 //Written by Jacky Jiang
@@ -92,8 +103,6 @@ app.get('/check-session', (req, res) => {
   res.send(req.session.test || 'No session');
 });
 
-
-
 //Written by Jacky Jiang
 app.get('/image/:id', (req, res) => {
   const id = new mongoose.Types.ObjectId(req.params.id);
@@ -119,7 +128,7 @@ app.get('/hub', (req, res) => {
 });
 
 //Updated by Jacky Jiang
-app.post('/', upload.single('image'), async (req, res) => {
+app.post('/', requireLogin ,upload.single('image'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).send('No file uploaded');
     if (!bucket) return res.status(500).send('GridFS not ready');
@@ -195,7 +204,7 @@ app.get('/systemGuide', (req, res) => {
 });
 
 
-app.get('/posts/:id/edit', (req, res) => {
+app.get('/posts/:id/edit', requireLogin, (req, res) => {
   Post.findById(req.params.id)
     .then(post => {
       res.render('edit', {
@@ -211,7 +220,7 @@ app.get('/posts/:id/edit', (req, res) => {
 
 // Originally made by Frank on 2/6
 // William made additions and bug fixes on 2/12
-app.post('/posts/:id', upload.single('image'), async (req, res) => {
+app.post('/posts/:id', requireLogin ,upload.single('image'), async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -347,7 +356,7 @@ app.get('/:id', (req, res) => {
 });
 
 
-app.delete('/:id', (req, res) => {
+app.delete('/:id', requireLogin, (req, res) => {
     const id = req.params.id;
 
     Post.findByIdAndDelete(id)
