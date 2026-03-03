@@ -157,7 +157,8 @@ app.post('/', requireLogin ,upload.single('image'), async (req, res) => {
       description: req.body.description,
       condition: req.body.condition,
       price: req.body.price,
-      location: req.body.location
+      location: req.body.location,
+      author:req.session.username
     });
 
     await post.save();
