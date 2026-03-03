@@ -11,6 +11,7 @@ const bcrypt = require('bcrypt');
 
 
 
+
 // express app
 const app = express();
 
@@ -23,6 +24,33 @@ SESSION_SECRET = "test"
 mongoose.connect(dbURI)
   .then(() => app.listen(3001))
   .catch(err => console.log(err));
+
+
+//Written by Frank Yang, 2/27/26
+//Middleware for logging in; prepares the incoming data so the routes can use it
+app.use(express.static('public'));  
+
+//Reads the raw text from the username and password and converts it into a JS object. So now the code
+// can do req.body.username and get teh username back. 
+app.use(express.urlencoded({ extended: true })); 
+
+app.use(morgan('dev')); //Every time a request hits the server it prints a line in the terminal
+
+
+
+//Middleware for checking if the user is logged in
+const requireGuest = (req, res, next) => {
+  if (req.session.userId) {
+    return res.render('signup', {
+      title: 'Signup Page',
+      error: 'You are already logged in. Log out to make a new account.'
+    });
+  }
+  next();
+};
+
+
+
 
 //Written by Jacky Jiang
 let bucket;
@@ -71,11 +99,6 @@ app.get('/image/:id', (req, res) => {
   const id = new mongoose.Types.ObjectId(req.params.id);
   bucket.openDownloadStream(id).pipe(res);
 });
-
-
-app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true}));
-app.use(morgan('dev'));
 
 
 //register view engine, this is for ejs
@@ -156,11 +179,11 @@ app.get('/support', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.render('login', { title: 'Login Page'});
+    res.render('login', { title: 'Login Page', error: null});
 });
 
-app.get('/signup', (req, res) => {
-    res.render('signup', { title: 'Signup Page'});
+app.get('/signup', requireGuest, (req, res) => {
+    res.render('signup', { title: 'Signup Page', error: null});
 });
 
 app.get('/userGuide', (req, res) => {
@@ -229,7 +252,7 @@ app.post('/posts/:id', upload.single('image'), async (req, res) => {
 //Additions made by William Zheng 2/23
 //This function originally lets a user sign up for a new account
 //Now, this function encrypts the password when the user submits their password
-app.post('/signup', async (req, res) => {
+app.post('/signup', requireGuest, async (req, res) => {
   try {
     const { username, password } = req.body;
 
@@ -258,6 +281,53 @@ app.post('/signup', async (req, res) => {
     res.status(500).send('Signup failed');
   }
 });
+
+// Written by Frank, 2/27/26
+// Checks submitted credentials against the database and logs the user in
+app.post('/login', async (req, res) => {//When the form is submitted these lines of code run
+  try {
+    const { username, password } = req.body; //Unpacks the data from when the middleware turned the data into JS object
+
+    // Look up the user by username
+    const user = await User.findOne({ username });
+
+    //First check 
+    if (!user) {
+      // Username not found
+      return res.status(401).render('login', {
+        title: 'Login Page',
+        error: 'Invalid username or password'
+      });
+    }
+
+    //Second checkpoint to see if password is right
+    // Compare submitted password against the stored hash
+    const passwordMatch = await bcrypt.compare(password, user.password); //Takes the plain text password and scrambles it in the exact way
+
+    //Checks if the result matches what's stored
+    if (!passwordMatch) {
+      // Password is wrong
+      return res.status(401).render('login', {
+        title: 'Login Page',
+        error: 'Invalid username or password'
+      });
+    }
+
+    // Credentials are correct — save user info to session
+    req.session.userId = user._id;
+    req.session.username = user.username;
+
+    res.redirect('/hub');
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Login failed');
+  }
+});
+
+
+
+
 
 app.get('/:id', (req, res) => {
     const id = req.params.id;

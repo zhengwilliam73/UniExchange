@@ -1,6 +1,7 @@
 # UniExchange
 
-
+npm init
+npm 
 
 ## Getting started
 

@@ -23,7 +23,9 @@
 
 
         <div class = "form-container">
-        <form action = "/" method= "login" enctype="multipart/form-data">
+          <!-- action = "/login" tells browser to send the data to /login address-->
+           <!-- method = "POST" is how the data gets delivered-->
+        <form action = "/login" method= "POST">
                 <div>
                         <label for = "username" >Username:</label>
                         <textarea id = "username" name = "username" style = "width: 100px; height: 30px;" rows = "5" cols = "50"required></textarea>
@@ -34,6 +36,9 @@
                         <label for = "password" >Password:</label>
                         <textarea id = "password" name = "password" style = "width: 100px; height: 30px;" rows = "5" cols = "50" required></textarea>
                 </div>
+                <% if (locals.error) { %>
+                  <p style="color: rgb(254, 5, 5);"><%= error %></p>
+                <% } %>
                 <button type="submit">Login</button>
                 <br>
 </body>
