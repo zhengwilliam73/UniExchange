@@ -52,7 +52,7 @@ const requireGuest = (req, res, next) => {
 //Middleware for checking if the user is logged in so that they can make a post
 const requireLogin = (req, res, next) => {
   if (!req.session.userId) {
-    return res.redirect('/login');
+    return res.redirect('/login?error=login_required');
   }
   next();
 };

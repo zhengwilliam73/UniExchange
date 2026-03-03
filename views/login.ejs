@@ -42,3 +42,17 @@
                 <button type="submit">Login</button>
                 <br>
 </body>
+
+<% if (error) { %>
+  <script>
+    alert("<%= error %>");
+  </script>
+<% } %>
+
+<script>
+  // Check query string for popup trigger
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('error') === 'login_required') {
+    alert('You must be logged in to perform this action.');
+  }
+</script>
