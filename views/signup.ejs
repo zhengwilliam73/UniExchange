@@ -44,6 +44,10 @@
     </ul>
 
     <!-- Submit Button -->
+     <% if (locals.error) { %>
+    <p style="color: red;"><%= error %></p>
+    <% } %>
+
     <button type="submit">Sign Up</button>
   </form>
 </div>
