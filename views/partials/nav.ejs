@@ -1,31 +1,39 @@
-<!-- Header section: UniExchange title and image side by side -->
+<!-- Header section -->
 <div style="display: flex; align-items: center;">
-        <!-- Site name with some space to the right -->
-        <h3 style="margin-right: 20px;">UniExchange</h3>
+    <h3 style="margin-right: 20px;">UniExchange</h3>
+    <img src="/drexel2.png" alt="Drexel students exchanging items" width="100">
+</div>
 
-        <!-- Image of drexel logo -->
-        <img src="../../drexel2.png" alt="Drexel students exchanging items" width="100">
-    </div>
+<nav>
+    <ul style="list-style-type: none; padding: 0; display: flex; gap: 20px; align-items: center;">
 
-    <!-- Navigation menu: links to other pages -->
-    <nav>
-         <ul style="list-style-type: none; padding: 0; display: flex; gap: 20px;">
-            <!-- Each list item is a link to another page -->
-            <li><a href="/">Home</a></li>
-            <li><a href="/hub">Hub</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/blog">Blog</a></li>
-            <li><a href="/post">Post</a></li>
-            <li><a href="/support">Support</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/support">Support</a></li>
+        <li><a href="/userGuide">User Guide</a></li>
+        <li><a href="/systemGuide">System Guide</a></li>
+
+        <% if (!isLoggedIn) { %>
+
+            <!-- Logged OUT -->
             <li><a href="/login">Login</a></li>
             <li><a href="/signup">Signup</a></li>
-            <li><a href="/userGuide">User Guide</a></li>
-            <li><a href="/systemGuide">System Guide</a></li>
 
-            <form action="/logout" method="POST">
-            <button type="submit">Logout</button>
-            </form>
-        </ul>
-    </nav>
+        <% } else { %>
 
-    
+            <!-- Logged IN -->
+            <li><a href="/hub">Hub</a></li>
+            <li><a href="/post">Post</a></li>
+            <li><span>Welcome, <%= username %></span></li>
+
+            <li>
+                <form action="/logout" method="POST" style="display:inline;">
+                    <button type="submit">Logout</button>
+                </form>
+            </li>
+
+        <% } %>
+
+    </ul>
+</nav>

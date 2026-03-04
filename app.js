@@ -1,49 +1,45 @@
-const express = require('express');
-const morgan = require('morgan');
-const mongoose = require('mongoose');
-const Post = require('./models/post');
-const upload = require('./gridfs');
-const { GridFSBucket } = require('mongodb');
-const session = require('express-session');
-const MongoStore = require('connect-mongo').default;
-const User = require('./models/user');
-const bcrypt = require('bcrypt');
-
-
-
+const express = require("express");
+const morgan = require("morgan");
+const mongoose = require("mongoose");
+const Post = require("./models/post");
+const upload = require("./gridfs");
+const { GridFSBucket } = require("mongodb");
+const session = require("express-session");
+const MongoStore = require("connect-mongo").default;
+const User = require("./models/user");
+const bcrypt = require("bcrypt");
 
 // express app
 const app = express();
 
 // connect to mongodb & listen for requests
-const dbURI = "mongodb+srv://zhengwilliam73_db_user:1yok67HMYsyQCA9x@uniexchange-cluster.fbmonai.mongodb.net/?appName=uniexchange-cluster";
+const dbURI =
+  "mongodb+srv://zhengwilliam73_db_user:1yok67HMYsyQCA9x@uniexchange-cluster.fbmonai.mongodb.net/?appName=uniexchange-cluster";
 
 // Used to sign the session cookie
-SESSION_SECRET = "test"
+SESSION_SECRET = "test";
 
-mongoose.connect(dbURI)
+mongoose
+  .connect(dbURI)
   .then(() => app.listen(3001))
-  .catch(err => console.log(err));
-
+  .catch((err) => console.log(err));
 
 //Written by Frank Yang, 2/27/26
 //Middleware for logging in; prepares the incoming data so the routes can use it
-app.use(express.static('public'));  
+app.use(express.static("public"));
 
 //Reads the raw text from the username and password and converts it into a JS object. So now the code
-// can do req.body.username and get teh username back. 
-app.use(express.urlencoded({ extended: true })); 
+// can do req.body.username and get teh username back.
+app.use(express.urlencoded({ extended: true }));
 
-app.use(morgan('dev')); //Every time a request hits the server it prints a line in the terminal
-
-
+app.use(morgan("dev")); //Every time a request hits the server it prints a line in the terminal
 
 //Middleware for checking if the user is logged in
 const requireGuest = (req, res, next) => {
   if (req.session.userId) {
-    return res.render('signup', {
-      title: 'Signup Page',
-      error: 'You are already logged in. Log out to make a new account.'
+    return res.render("signup", {
+      title: "Signup Page",
+      error: "You are already logged in. Log out to make a new account.",
     });
   }
   next();
@@ -52,18 +48,17 @@ const requireGuest = (req, res, next) => {
 //Middleware for checking if the user is logged in so that they can make a post
 const requireLogin = (req, res, next) => {
   if (!req.session.userId) {
-    return res.redirect('/login?error=login_required');
+    return res.redirect("/login?error=login_required");
   }
   next();
 };
 
-
 //Written by Jacky Jiang
 let bucket;
 
-mongoose.connection.once('open', () => {
+mongoose.connection.once("open", () => {
   bucket = new GridFSBucket(mongoose.connection.db, {
-    bucketName: 'images'
+    bucketName: "images",
   });
 });
 
@@ -83,62 +78,69 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
       httpOnly: true,
-      sameSite: 'lax'
-    }
-  })
+      sameSite: "lax",
+    },
+  }),
 );
+
+// Written by Jaden Nguyen, 3/4/26
+app.use((req, res, next) => {
+  res.locals.isLoggedIn = !!req.session.userId;
+  res.locals.username = req.session.username;
+  next();
+});
 
 // Written by William Zheng, 2/19/26
 // Test cases for session
-app.get('/test-session', (req, res) => {
-  req.session.test = 'working';
-  res.send('Session set');
+app.get("/test-session", (req, res) => {
+  req.session.test = "working";
+  res.send("Session set");
 });
-app.get('/check-session', (req, res) => {
-  res.send(req.session.test || 'No session');
+app.get("/check-session", (req, res) => {
+  res.send(req.session.test || "No session");
 });
 
 //Written by Jacky Jiang
-app.get('/image/:id', (req, res) => {
+app.get("/image/:id", (req, res) => {
   const id = new mongoose.Types.ObjectId(req.params.id);
   bucket.openDownloadStream(id).pipe(res);
 });
 
-
 //register view engine, this is for ejs
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
-app.get('/', (req, res) => {
-    res.render('index', { title: 'Home'});
+app.get("/", (req, res) => {
+  res.render("index", { title: "Home" });
 });
 
-app.get('/hub', (req, res) => {
-    Post.find().sort( {createdAt: -1})
-        .then((result) => {
-            res.render('hub', {title: 'All Posts', posts: result})
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+app.get("/hub", requireLogin, (req, res) => {
+  Post.find()
+    .sort({ createdAt: -1 })
+    .then((result) => {
+      res.render("hub", { title: "All Posts", posts: result });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 //Updated by Jacky Jiang
-app.post('/', requireLogin ,upload.single('image'), async (req, res) => {
+app.post("/", requireLogin, upload.single("image"), async (req, res) => {
   try {
-    if (!req.file) return res.status(400).send('No file uploaded');
-    if (!bucket) return res.status(500).send('GridFS not ready');
+    if (!req.file) return res.status(400).send("No file uploaded");
+    if (!bucket) return res.status(500).send("GridFS not ready");
 
     const uploadFile = () => {
       return new Promise((resolve, reject) => {
         const uploadStream = bucket.openUploadStream(req.file.originalname, {
-          contentType: req.file.mimetype
+          contentType: req.file.mimetype,
         });
 
         uploadStream.end(req.file.buffer);
 
-        uploadStream.on('error', reject);
+        uploadStream.on("error", reject);
 
-        uploadStream.on('finish', () => {
+        uploadStream.on("finish", () => {
           resolve(uploadStream.id);
         });
       });
@@ -147,130 +149,134 @@ app.post('/', requireLogin ,upload.single('image'), async (req, res) => {
     const fileId = await uploadFile();
 
     const post = new Post({
-      imageId: fileId, 
+      imageId: fileId,
       title: req.body.title,
       description: req.body.description,
       condition: req.body.condition,
       price: req.body.price,
       location: req.body.location,
-      author:req.session.username
+      author: req.session.username,
     });
 
     await post.save();
-    res.redirect('/hub');
-
+    res.redirect("/hub");
   } catch (err) {
     console.error(err);
-    res.status(500).send('Upload failed');
+    res.status(500).send("Upload failed");
   }
 });
 
-
-app.get('/post', (req, res) => {
-    res.render('post', { title: 'Post'});
+app.get("/post", requireLogin, (req, res) => {
+  res.render("post", { title: "Post" });
 });
 
-app.get('/about', (req, res) => {
-    res.render('about', { title: 'About Us'});
+app.get("/about", (req, res) => {
+  res.render("about", { title: "About Us" });
 });
 
-app.get('/blog', (req, res) => {
-    res.render('blog', { title: 'Blogs'});
+app.get("/blog", (req, res) => {
+  res.render("blog", { title: "Blogs" });
 });
 
-
-app.get('/support', (req, res) => {
-    res.render('support', { title: 'Support'});
+app.get("/support", (req, res) => {
+  res.render("support", { title: "Support" });
 });
 
-app.get('/login', (req, res) => {
-    res.render('login', { title: 'Login Page', error: null});
+app.get("/login", (req, res) => {
+  res.render("login", { title: "Login Page", error: null });
 });
 
-app.get('/signup', requireGuest, (req, res) => {
-    res.render('signup', { title: 'Signup Page', error: null});
+app.get("/signup", requireGuest, (req, res) => {
+  res.render("signup", { title: "Signup Page", error: null });
 });
 
-app.get('/userGuide', (req, res) => {
-    res.render('userGuide', { title: 'User Guide'});
+app.get("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/login");
+  });
 });
 
-app.get('/systemGuide', (req, res) => {
-    res.render('systemGuide', { title: 'System Guide'});
+app.get("/userGuide", (req, res) => {
+  res.render("userGuide", { title: "User Guide" });
 });
 
+app.get("/systemGuide", (req, res) => {
+  res.render("systemGuide", { title: "System Guide" });
+});
 
-app.get('/posts/:id/edit', requireLogin, (req, res) => {
+app.get("/posts/:id/edit", requireLogin, (req, res) => {
   Post.findById(req.params.id)
-    .then(post => {
-      res.render('edit', {
-        title: 'Edit Post',
-        post: post
+    .then((post) => {
+      res.render("edit", {
+        title: "Edit Post",
+        post: post,
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 });
 
-
 // Originally made by Frank on 2/6
 // William made additions and bug fixes on 2/12
-app.post('/posts/:id', requireLogin ,upload.single('image'), async (req, res) => {
-  const id = req.params.id;
+app.post(
+  "/posts/:id",
+  requireLogin,
+  upload.single("image"),
+  async (req, res) => {
+    const id = req.params.id;
 
-  try {
-    if (!req.file) return res.status(400).send('No file uploaded');
-    if (!bucket) return res.status(500).send('GridFS not ready');
+    try {
+      if (!req.file) return res.status(400).send("No file uploaded");
+      if (!bucket) return res.status(500).send("GridFS not ready");
 
-    const uploadStream = bucket.openUploadStream(req.file.originalname, {
-      contentType: req.file.mimetype
-    });
-
-    uploadStream.end(req.file.buffer);
-
-    uploadStream.on('error', err => {
-      console.error(err);
-      return res.status(500).send('Upload failed');
-    });
-
-    uploadStream.on('finish', async () => {
-      await Post.findByIdAndUpdate(id, {
-        imageId: uploadStream.id,
-        title: req.body.title,
-        description: req.body.description,
-        condition: req.body.condition,
-        price: req.body.price,
-        location: req.body.location
+      const uploadStream = bucket.openUploadStream(req.file.originalname, {
+        contentType: req.file.mimetype,
       });
 
-      res.redirect('/hub');
-    });
+      uploadStream.end(req.file.buffer);
 
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Update failed');
-  }
-});
+      uploadStream.on("error", (err) => {
+        console.error(err);
+        return res.status(500).send("Upload failed");
+      });
+
+      uploadStream.on("finish", async () => {
+        await Post.findByIdAndUpdate(id, {
+          imageId: uploadStream.id,
+          title: req.body.title,
+          description: req.body.description,
+          condition: req.body.condition,
+          price: req.body.price,
+          location: req.body.location,
+        });
+
+        res.redirect("/hub");
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Update failed");
+    }
+  },
+);
 
 //Made by Jacky Jiang 2/20/26
 //Additions made by William Zheng 2/23
 //This function originally lets a user sign up for a new account
 //Now, this function encrypts the password when the user submits their password
-app.post('/signup', requireGuest, async (req, res) => {
+app.post("/signup", requireGuest, async (req, res) => {
   try {
     const { username, password } = req.body;
 
     const existingUser = await User.findOne({ username });
 
     if (existingUser) {
-      return res.status(400).send('User already exists');
+      return res.status(400).send("User already exists");
     }
 
     // Code to encrypt the user's password
     const saltRounds = 12;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-
 
     const newUser = new User({
       username,
@@ -279,29 +285,29 @@ app.post('/signup', requireGuest, async (req, res) => {
 
     await newUser.save();
 
-    res.redirect('/login');
-
+    res.redirect("/login");
   } catch (err) {
     console.error(err);
-    res.status(500).send('Signup failed');
+    res.status(500).send("Signup failed");
   }
 });
 
 // Written by Frank, 2/27/26
 // Checks submitted credentials against the database and logs the user in
-app.post('/login', async (req, res) => {//When the form is submitted these lines of code run
+app.post("/login", async (req, res) => {
+  //When the form is submitted these lines of code run
   try {
     const { username, password } = req.body; //Unpacks the data from when the middleware turned the data into JS object
 
     // Look up the user by username
     const user = await User.findOne({ username });
 
-    //First check 
+    //First check
     if (!user) {
       // Username not found
-      return res.status(401).render('login', {
-        title: 'Login Page',
-        error: 'Invalid username or password'
+      return res.status(401).render("login", {
+        title: "Login Page",
+        error: "Invalid username or password",
       });
     }
 
@@ -312,9 +318,9 @@ app.post('/login', async (req, res) => {//When the form is submitted these lines
     //Checks if the result matches what's stored
     if (!passwordMatch) {
       // Password is wrong
-      return res.status(401).render('login', {
-        title: 'Login Page',
-        error: 'Invalid username or password'
+      return res.status(401).render("login", {
+        title: "Login Page",
+        error: "Invalid username or password",
       });
     }
 
@@ -322,17 +328,16 @@ app.post('/login', async (req, res) => {//When the form is submitted these lines
     req.session.userId = user._id;
     req.session.username = user.username;
 
-    res.redirect('/hub');
-
+    res.redirect("/hub");
   } catch (err) {
     console.error(err);
-    res.status(500).send('Login failed');
+    res.status(500).send("Login failed");
   }
 });
 
 // Made by William Zheng, 3/3
 // Logout route
-app.post('/logout', (req, res) => {
+app.post("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       console.log(err);
@@ -340,46 +345,42 @@ app.post('/logout', (req, res) => {
     }
 
     // Clear cookie from browser
-    res.clearCookie('connect.sid'); 
-    res.redirect('/login'); 
+    res.clearCookie("connect.sid");
+    res.redirect("/login");
   });
 });
 
+app.get("/:id", requireLogin, (req, res) => {
+  const id = req.params.id;
 
-app.get('/:id', (req, res) => {
-    const id = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).render("404", { title: "Post not found" });
+  }
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).render('404', { title: 'Post not found' });
-    }
-
-    Post.findById(id)
-        .then(result => {
-            if (!result) {
-                return res.status(404).render('404', { title: 'Post not found' });
-            }
-            res.render('details', { post: result, title: 'Post Details' });
-        })
-        .catch(err => console.log(err));
+  Post.findById(id)
+    .then((result) => {
+      if (!result) {
+        return res.status(404).render("404", { title: "Post not found" });
+      }
+      res.render("details", { post: result, title: "Post Details" });
+    })
+    .catch((err) => console.log(err));
 });
 
+app.delete("/:id", requireLogin, (req, res) => {
+  const id = req.params.id;
 
-app.delete('/:id', requireLogin, (req, res) => {
-    const id = req.params.id;
-
-    Post.findByIdAndDelete(id)
-        .then(result => {
-            res.json({ redirect: '/hub'})
-        })
-        .catch(err => {
-            console.log(err);
-        })
-})
-
+  Post.findByIdAndDelete(id)
+    .then((result) => {
+      res.json({ redirect: "/hub" });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 
 // 404 page
 app.use((req, res) => {
-    res.render('404', { title: '404!'});
-    res.status(404);
+  res.render("404", { title: "404!" });
+  res.status(404);
 });
-
