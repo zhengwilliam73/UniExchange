@@ -90,15 +90,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Written by William Zheng, 2/19/26
-// Test cases for session
-app.get("/test-session", (req, res) => {
-  req.session.test = "working";
-  res.send("Session set");
-});
-app.get("/check-session", (req, res) => {
-  res.send(req.session.test || "No session");
-});
 
 //Written by Jacky Jiang
 app.get("/image/:id", (req, res) => {
@@ -125,6 +116,7 @@ app.get("/hub", requireLogin, (req, res) => {
 });
 
 //Updated by Jacky Jiang
+// Handles image uploading when a post is created
 app.post("/", requireLogin, upload.single("image"), async (req, res) => {
   try {
     if (!req.file) return res.status(400).send("No file uploaded");
@@ -166,6 +158,9 @@ app.post("/", requireLogin, upload.single("image"), async (req, res) => {
   }
 });
 
+
+// The following get routes are only used to render in ejs files, 
+// The only exception is the /logout route, which also destroys the user's session
 app.get("/post", requireLogin, (req, res) => {
   res.render("post", { title: "Post" });
 });
@@ -203,7 +198,9 @@ app.get("/userGuide", (req, res) => {
 app.get("/systemGuide", (req, res) => {
   res.render("systemGuide", { title: "System Guide" });
 });
+// End of basic rendering middleware
 
+// Handles the page the user is taken to after they edit a post
 app.get("/posts/:id/edit", requireLogin, (req, res) => {
   Post.findById(req.params.id)
     .then((post) => {
@@ -219,11 +216,8 @@ app.get("/posts/:id/edit", requireLogin, (req, res) => {
 
 // Originally made by Frank on 2/6
 // William made additions and bug fixes on 2/12
-app.post(
-  "/posts/:id",
-  requireLogin,
-  upload.single("image"),
-  async (req, res) => {
+// Handles uploading of images when a post is being updated
+app.post("/posts/:id", requireLogin, upload.single("image"), async (req, res) => {
     const id = req.params.id;
 
     try {
@@ -350,6 +344,7 @@ app.post("/logout", (req, res) => {
   });
 });
 
+// Handles getting the details page for an individual post
 app.get("/:id", requireLogin, (req, res) => {
   const id = req.params.id;
 
@@ -367,6 +362,7 @@ app.get("/:id", requireLogin, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// Handles deleting a post
 app.delete("/:id", requireLogin, (req, res) => {
   const id = req.params.id;
 
@@ -379,7 +375,7 @@ app.delete("/:id", requireLogin, (req, res) => {
     });
 });
 
-// 404 page
+// 404 page, this is the final page seen buy a user if all other routes are not satisfactory
 app.use((req, res) => {
   res.render("404", { title: "404!" });
   res.status(404);
