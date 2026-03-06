@@ -200,59 +200,70 @@ app.get("/systemGuide", (req, res) => {
 });
 // End of basic rendering middleware
 
-// Handles the page the user is taken to after they edit a post
-app.get("/posts/:id/edit", requireLogin, (req, res) => {
-  Post.findById(req.params.id)
-    .then((post) => {
-      res.render("edit", {
-        title: "Edit Post",
-        post: post,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+
+//3/3/26 Made by Frank
+//3/5/26 Updated by Frank. When the User finds the post in the database using the ID from url, it checks if there is an author
+//and if the author is different from the currently logged in user. If the check fails, it displays an error message.
+app.get('/posts/:id/edit', requireLogin, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    if (post.author !== req.session.username) {
+       return res.redirect(`/${req.params.id}?error=not_allowed`);
+    }
+
+    res.render('edit', { title: 'Edit Post', post: post });
+  } catch (err) {
+    console.log(err);
+  }
 });
+
 
 // Originally made by Frank on 2/6
 // William made additions and bug fixes on 2/12
 // Handles uploading of images when a post is being updated
-app.post("/posts/:id", requireLogin, upload.single("image"), async (req, res) => {
-    const id = req.params.id;
+app.post('/posts/:id', requireLogin, upload.single('image'), async (req, res) => {
+  const id = req.params.id;
 
-    try {
-      if (!req.file) return res.status(400).send("No file uploaded");
-      if (!bucket) return res.status(500).send("GridFS not ready");
+  try {
+    const existingPost = await Post.findById(id);
 
-      const uploadStream = bucket.openUploadStream(req.file.originalname, {
-        contentType: req.file.mimetype,
-      });
-
-      uploadStream.end(req.file.buffer);
-
-      uploadStream.on("error", (err) => {
-        console.error(err);
-        return res.status(500).send("Upload failed");
-      });
-
-      uploadStream.on("finish", async () => {
-        await Post.findByIdAndUpdate(id, {
-          imageId: uploadStream.id,
-          title: req.body.title,
-          description: req.body.description,
-          condition: req.body.condition,
-          price: req.body.price,
-          location: req.body.location,
-        });
-
-        res.redirect("/hub");
-      });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send("Update failed");
+    if (existingPost.author && existingPost.author !== req.session.username) {
+      return res.status(403).send('You are not allowed to edit this post');
     }
-  },
-);
+
+    if (!req.file) return res.status(400).send('No file uploaded');
+    if (!bucket) return res.status(500).send('GridFS not ready');
+
+    const uploadStream = bucket.openUploadStream(req.file.originalname, {
+      contentType: req.file.mimetype,
+    });
+
+    uploadStream.end(req.file.buffer);
+
+    uploadStream.on('error', (err) => {
+      console.error(err);
+      return res.status(500).send('Upload failed');
+    });
+
+    uploadStream.on('finish', async () => {
+      await Post.findByIdAndUpdate(id, {
+        imageId: uploadStream.id,
+        title: req.body.title,
+        description: req.body.description,
+        condition: req.body.condition,
+        price: req.body.price,
+        location: req.body.location,
+      });
+
+      res.redirect('/hub');
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Update failed');
+  }
+});
 
 //Made by Jacky Jiang 2/20/26
 //Additions made by William Zheng 2/23
@@ -357,22 +368,26 @@ app.get("/:id", requireLogin, (req, res) => {
       if (!result) {
         return res.status(404).render("404", { title: "Post not found" });
       }
-      res.render("details", { post: result, title: "Post Details" });
+      res.render("details", { post: result, title: "Post Details", query: req.query });
     })
     .catch((err) => console.log(err));
 });
 
 // Handles deleting a post
-app.delete("/:id", requireLogin, (req, res) => {
-  const id = req.params.id;
+//Updated by Frank 3/5/26. IF a user isn't allowed to delete we send back an error message.
+app.delete('/:id', requireLogin, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
 
-  Post.findByIdAndDelete(id)
-    .then((result) => {
-      res.json({ redirect: "/hub" });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    if (post.author !== req.session.username) {
+       return res.json({ error: 'not_allowed', id: req.params.id });
+    }
+
+    await Post.findByIdAndDelete(req.params.id);
+    res.json({ redirect: '/hub' });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 // 404 page, this is the final page seen buy a user if all other routes are not satisfactory

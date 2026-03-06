@@ -16,12 +16,16 @@
             <p>Location: <%= post.location %></p>
         </div>
         <!--When the user clicks on the edit button, they are routed to a new page. Made by Frank-->
+        <% if (query && query.error === 'not_allowed') { %>
+        <p style="color: red;">You are not allowed to edit or delete this post.</p>. <!--This message pops up after a failed edit or delete attempt the message appears.-->
+        <% } %>
         <a class="edit" href="/posts/<%= post._id %>/edit">edit</a>  
         <a class = "delete" data-doc="<%= post._id %>">delete</a>
          
 
     </div>
 
+    <!--Script updated by Frank 3/5/26-->
 <script>
         const trashcan = document.querySelector('a.delete');
 
@@ -32,7 +36,13 @@
                 method: 'DELETE'
             })
             .then(response => response.json())
-            .then(data => window.location.href = data.redirect)
+            .then(data => {
+            if (data.error) {
+                window.location.href = `/${data.id}?error=not_allowed`;
+            } else {
+                window.location.href = data.redirect;
+            }
+            })
             .catch(err => console.log(err));
         })
     </script>
