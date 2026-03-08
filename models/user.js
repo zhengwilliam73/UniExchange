@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 //Creates the Schema object
 const Schema = mongoose.Schema;
 
+//File made by Frank 2/19
 //Defines User Schema
 
 const userSchema = new Schema({
