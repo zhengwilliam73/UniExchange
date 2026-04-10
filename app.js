@@ -11,6 +11,28 @@ const bcrypt = require("bcrypt");
 
 // express app
 const app = express();
+const ITEM_CATEGORIES = [
+  "Textbooks",
+  "Electronics",
+  "Furniture",
+  "Clothing",
+  "School Supplies",
+  "Tickets",
+  "Other",
+];
+const normalizeCategories = (rawCategories) => {
+  if (!rawCategories) return [];
+
+  const categoryList = Array.isArray(rawCategories)
+    ? rawCategories
+    : [rawCategories];
+
+  return [...new Set(
+    categoryList
+      .map((category) => String(category).trim())
+      .filter((category) => ITEM_CATEGORIES.includes(category)),
+  )];
+};
 
 // connect to mongodb & listen for requests
 const dbURI =
@@ -145,6 +167,7 @@ app.post("/", requireLogin, upload.single("image"), async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       condition: req.body.condition,
+      categories: normalizeCategories(req.body.categories),
       price: req.body.price,
       location: req.body.location,
       author: req.session.username,
@@ -162,7 +185,7 @@ app.post("/", requireLogin, upload.single("image"), async (req, res) => {
 // The following get routes are only used to render in ejs files, 
 // The only exception is the /logout route, which also destroys the user's session
 app.get("/post", requireLogin, (req, res) => {
-  res.render("post", { title: "Post" });
+  res.render("post", { title: "Post", categories: ITEM_CATEGORIES });
 });
 
 app.get("/about", (req, res) => {
@@ -212,7 +235,7 @@ app.get('/posts/:id/edit', requireLogin, async (req, res) => {
        return res.redirect(`/${req.params.id}?error=not_allowed`);
     }
 
-    res.render('edit', { title: 'Edit Post', post: post });
+    res.render('edit', { title: 'Edit Post', post: post, categories: ITEM_CATEGORIES });
   } catch (err) {
     console.log(err);
   }
@@ -252,6 +275,7 @@ app.post('/posts/:id', requireLogin, upload.single('image'), async (req, res) =>
         title: req.body.title,
         description: req.body.description,
         condition: req.body.condition,
+        categories: normalizeCategories(req.body.categories),
         price: req.body.price,
         location: req.body.location,
       });

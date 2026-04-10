@@ -53,6 +53,22 @@
             <br>
 
             <div>
+                <label for="categories">Categories:</label>
+                <select id="categories" name="categories" multiple required>
+                    <% categories.forEach(category => { %>
+                        <option
+                            value="<%= category %>"
+                            <%= post.categories && post.categories.includes(category) ? 'selected' : '' %>
+                        >
+                            <%= category %>
+                        </option>
+                    <% }) %>
+                </select>
+                <p>Use Ctrl (or Command on Mac) to select multiple categories.</p>
+            </div>
+            <br>
+
+            <div>
                 <label for="price">Price:</label>
                 <input
                     type="number"
@@ -111,6 +127,7 @@
         <h2 id="theTitle"></h2>
         <p id="theDescription"></p>
         <p id="theCondition"></p>
+        <p id="theCategories"></p>
         <p id="thePrice"></p>
         <p id="theLocation"></p>
     </div>

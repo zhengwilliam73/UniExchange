@@ -21,6 +21,10 @@ const postSchema = new Schema( {
         type: String,
         required: true
     },
+    categories: {
+        type: [String],
+        default: []
+    },
     price: {
         type: Number,
         required: true
