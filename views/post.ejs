@@ -37,12 +37,12 @@
 
                 <div>
                         <label for = "categories">Categories:</label>
-                        <select id = "categories" name = "categories" multiple>
+                        <select id = "categories" name = "categories" multiple aria-describedby="categories-help">
                                 <% categories.forEach(category => { %>
                                         <option value="<%= category %>"><%= category %></option>
                                 <% }) %>
                         </select>
-                        <p>Use Ctrl (or Command on Mac) to select multiple categories.</p>
+                        <p id="categories-help">Use Ctrl (or Command on Mac) to select multiple categories.</p>
                 </div>
                 <br>
 
