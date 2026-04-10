@@ -13,7 +13,7 @@ function setValues() {
     document.getElementById('theTitle').innerText = title;
     document.getElementById('theDescription').innerText = description;
     document.getElementById('theCondition').innerText = "Condition: " + condition;
-    document.getElementById('theCategories').innerText = "Categories: " + categories.join(', ');
+    document.getElementById('theCategories').innerText = "Categories: " + (categories.length ? categories.join(', ') : 'None');
     document.getElementById('thePrice').innerText = "Price: $" + price;
     document.getElementById('theLocation').innerText = "Location: " + location;
 
