@@ -3,12 +3,17 @@ function setValues() {
     const price = document.getElementById('price').value;
     const location = document.getElementById('location').value;
     const condition = document.getElementById('condition').value;
+    const categoriesSelect = document.getElementById('categories');
     const description = document.getElementById('description').value;
     const imageInput = document.getElementById('image');
+    const categories = categoriesSelect
+        ? Array.from(categoriesSelect.selectedOptions).map(option => option.value)
+        : [];
 
     document.getElementById('theTitle').innerText = title;
     document.getElementById('theDescription').innerText = description;
     document.getElementById('theCondition').innerText = "Condition: " + condition;
+    document.getElementById('theCategories').innerText = "Categories: " + (categories.length ? categories.join(', ') : 'None');
     document.getElementById('thePrice').innerText = "Price: $" + price;
     document.getElementById('theLocation').innerText = "Location: " + location;
 

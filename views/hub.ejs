@@ -21,6 +21,7 @@
                     </a>
                     <p class="description"><%= post.description %></p>
                     <p class="condition">Condition: <%= post.condition %></p>
+                    <p class="categories">Categories: <%= post.categories && post.categories.length ? post.categories.join(', ') : 'None' %></p>
                     <p class="price">Price: $<%= post.price %></p>
                     <p class="location">Location: <%= post.location %></p>
                     <p class="author">Posted by: <%= post.author %></p>

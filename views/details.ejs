@@ -12,6 +12,7 @@
             <img src = "/image/<%= post.imageId %> " width = "375" alt="post ">
             <p>Description: <%= post.description %></p>
             <p>Condition: <%= post.condition %></p>
+            <p>Categories: <%= post.categories && post.categories.length ? post.categories.join(', ') : 'None' %></p>
             <p>Price: $<%= post.price %></p>
             <p>Location: <%= post.location %></p>
         </div>
