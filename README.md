@@ -14,13 +14,12 @@ A MongoDB Atlas account and cluster
 **Steps**
 
 **1. Clone the repository:**
-
-bash   git clone https://gitlab.cci.drexel.edu/cid/2526/fw1023/b6/uniexchange.git
+git clone https://gitlab.cci.drexel.edu/cid/2526/fw1023/b6/uniexchange.git
 cd uniexchange
 
 **2. Install dependencies:**
 
-bash npm install
+npm install
 **3. In app.js, update the database URI and session secret with your own values:**
 
 const dbURI = "your-mongodb-atlas-uri";
@@ -28,9 +27,9 @@ SESSION_SECRET = "your-secret-key";
 
 **4.Start the server:**
 
-bash   node app.js
+_node app.js_
 Or with auto-reload:
-bash npx nodemon app.js
+_npx nodemon app.js_
 
 **5.Visit http://localhost:3001 in your browser.**
 
