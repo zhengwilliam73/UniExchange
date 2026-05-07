@@ -112,6 +112,9 @@ Then visit:
 - University email verification for account creation
 - Saved/favorited listings
 
+## Future plans
+Currently, our frontend is only CSS, so we plan to add React in the future to make our website look more polished. In addition, we have plans of deploying this.
+
 ## License
 
 ISC
