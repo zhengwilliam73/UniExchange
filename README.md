@@ -1,51 +1,117 @@
 # UniExchange
-A student-to-student marketplace where university students can buy and sell items like textbooks, electronics, furniture, and more. Built as a full-stack web app with secure user authentication and image uploads.
 
-## Description
-UniExchange is a campus marketplace that lets students post items for sale and browse listings from other students. Users can create an account, log in, and post items with photos, descriptions, prices, conditions, and categories. Only the author of a post can edit or delete it. The app is built with Node.js, Express, EJS, and MongoDB Atlas.
-Categories supported: Textbooks, Electronics, Furniture, Clothing, School Supplies, Tickets, Other
+A student-to-student marketplace where university students can buy and sell items (textbooks, electronics, furniture, and more).
 
-## Installation
-Requirements
+> **Status:** In active development
 
-Node.js v18+
-A MongoDB Atlas account and cluster
+## Table of Contents
 
-**Steps**
+- [About](#about)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+  - [Run the App](#run-the-app)
+- [Usage](#usage)
+- [Roadmap](#roadmap)
+- [License](#license)
 
-**1. Clone the repository:**
-git clone https://gitlab.cci.drexel.edu/cid/2526/fw1023/b6/uniexchange.git
-cd uniexchange
+## About
 
-**2. Install dependencies:**
+**UniExchange** is a campus marketplace that lets students post items for sale and browse listings from other students. Users can create an account, log in securely, and create listings with photos, descriptions, prices, and categories.
 
-npm install
-**3. In app.js, update the database URI and session secret with your own values:**
+Supported categories:
 
+- Textbooks
+- Electronics
+- Furniture
+- Clothing
+- School Supplies
+- Tickets
+- Other
+
+## Features
+
+- Secure user authentication
+- Create and browse listings
+- Item photos, descriptions, and pricing
+- Category-based organization
+
+## Tech Stack
+
+- **Backend:** Node.js (Express)
+- **Database:** MongoDB (Atlas)
+- **Views:** EJS
+- **Frontend:** HTML/CSS/JavaScript
+
+> Repo language composition: EJS (51.1%), JavaScript (27.2%), HTML (17.8%), CSS (3.9%).
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js **v18+**
+- A MongoDB Atlas account + cluster
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://gitlab.cci.drexel.edu/cid/2526/fw1023/b6/uniexchange.git
+   cd uniexchange
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+### Configuration
+
+In `app.js`, update the database URI and session secret with your own values:
+
+```js
 const dbURI = "your-mongodb-atlas-uri";
 SESSION_SECRET = "your-secret-key";
+```
 
-**4.Start the server:**
+> Tip: Consider moving secrets into environment variables (e.g., using a `.env` file) to avoid committing credentials.
 
-_node app.js_
+### Run the App
+
+Start the server:
+
+```bash
+node app.js
+```
+
 Or with auto-reload:
-_npx nodemon app.js_
 
-**5.Visit http://localhost:3001 in your browser.**
+```bash
+npx nodemon app.js
+```
+
+Then visit:
+
+- http://localhost:3001
 
 ## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+
+1. Create an account and log in.
+2. Browse existing listings by category.
+3. Post a new item with an image, description, price, and category.
 
 ## Roadmap
-Search and filter listings by category or keyword
-In-app messaging between buyers and sellers
-University email verification for account creation
-Saved/favorited listings
+
+- Search and filter listings by category or keyword
+- In-app messaging between buyers and sellers
+- University email verification for account creation
+- Saved/favorited listings
 
 ## License
+
 ISC
-
-## Project status
-The project is still being developed. We plan to incorporate React, so the website looks more polished. In addition, we want to deploy this project
-in the future, once we add the core features listed in the Roadmap. 
-
